@@ -6,16 +6,17 @@
 */
 void InsertionSort(int *V, int tam){
   int aux;
+  int j
   for(int i = 1; i < tam; i++){
     aux = V[i];
-    if(aux < V[i-1]){
-      for(int j = i; j > 0; j--){
-        if(aux < V[j-1]){
+
+      for(j = i; j > 0 && aux < V[j-1]; j--){
+
           V[j] = V[j-1];
-          V[j-1] = aux;
-        }//if
+
       }//for
-    }//if
+      V[j] = aux;
+
   }//for
 }//InserctionSort
 
@@ -25,6 +26,7 @@ void InsertionSort(int *V, int tam){
   *\param V ponteiro para o vetor a ser exibido
   *\param tam para o tamanho do vetor
 */
+
 void exibeVetor(int *V, int tam){
 
     for(size_t i = 0; i<tam; i++){
