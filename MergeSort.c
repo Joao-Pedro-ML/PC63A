@@ -54,12 +54,19 @@ void mergeSort(int *vetor, int inicio, int fim){
  * 4 - Libera memória do vetor temporario
  */
 
-void merge(int *vetor, int inicio, int fim){
+void merge(int *vetor, int inicio, int meio, int fim){
 
+  meio = ((fim-inicio)/2)+1;
   int *aux = (int *)malloc(fim*sizeof(int));
   for(int i = 0; i<fim; i++){
-    if()
-  }
+    if(inicio >= fim/2){
+      aux[i] = V[meio];
+      meio++;
+    }//if
+    if(){
+      
+    }//if
+  }//for
 
 }//merge
 
