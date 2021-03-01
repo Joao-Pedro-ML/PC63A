@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 void exibeVetor(int *V, int tam){
 
@@ -20,29 +21,9 @@ int *vetor(int tam){
 }//func vetor
 
 /**
- * \brief Ordena o vetor usando Mergesort
- *
- * \param V ponteiro para o vetor a ser ordenado
- * \param inicio indice inicial do vetor
- * \param fim indice final do vetor
- *  
- * 1 - Testa o caso base
- * 2 - Faz as 2 chamadas recursivas
- * 3 - Chama a função merge para intercalar os 2 subvetores 
- */
-
-void mergeSort(int *vetor, int inicio, int fim){
-
-  if(inicio == fim){
-    mergeSort();
-  }
-
-}//mergeSort
-
-/**
  * \brief Intercala os subvetores mantendo a ordenação
  *
- * \param V ponteiro para o vetor a ser intercalado
+ * \param vetor ponteiro para o vetor a ser intercalado
  * \param inicio indice inicial do subvetor1
  * \param meio indice final do subvetor1
  * \param fim indice final do subvetor2
@@ -54,27 +35,72 @@ void mergeSort(int *vetor, int inicio, int fim){
  * 4 - Libera memória do vetor temporario
  */
 
+
 void merge(int *vetor, int inicio, int meio, int fim){
 
-  meio = ((fim-inicio)/2)+1;
-  int *aux = (int *)malloc(fim*sizeof(int));
-  for(int i = 0; i<fim; i++){
-    if(inicio >= fim/2){
-      aux[i] = V[meio];
-      meio++;
+    int *aux, p1, p2, tam, i, j, k;
+    tam = fim-inicio+1;
+    p1 = inicio;
+    p2=meio+1;
+    aux = (int*)malloc(tam*sizeof(int));
+    if(aux!=NULL){
+        for (i=0; i<tam; i++) {
+            if(p1<=meio && p2<=fim){
+                if(vetor[p1]<vetor[p2]){
+                    aux[i] = vetor[p2++];
+                } else{
+                    aux[i] = vetor[p1++];
+                }
+            }else{
+                if(p1<=meio){
+                    aux[i] = vetor[p1++];
+                }else{
+                    aux[i] = vetor[p2++];
+                }
+            }
+        }//for
+        for(j=0, k=inicio; j<tam; j++, k++){
+            vetor[k] = aux[j];
+        }
     }//if
-    if(){
-      
-    }//if
-  }//for
+    free(aux);
 
 }//merge
 
+/**
+ * \brief Ordena o vetor usando Mergesort
+ *
+ * \param vetor ponteiro para o vetor a ser ordenado
+ * \param inicio indice inicial do vetor
+ * \param fim indice final do vetor
+ *
+ * 1 - Testa o caso base
+ * 2 - Faz as 2 chamadas recursivas
+ * 3 - Chama a função merge para intercalar os 2 subvetores
+ */
+
+void mergeSort(int *vetor, int inicio, int fim){
+
+    int meio;
+    if(inicio < fim){
+        meio = floor((inicio+fim)/2);
+        mergeSort(vetor, inicio, meio);
+        mergeSort(vetor, meio+1, fim);
+        merge(vetor, inicio, meio, fim);
+    }
+
+}//mergeSort
+
+
 int main(){
 
-  int *V = NULL;
-  V = vetor(10);
-  exibeVetor(V, 10);
+    int *V = NULL;
+    int tam = 15;
+    V = vetor(tam);
+    exibeVetor(V, tam);
+    printf("\n-------------\n");
+    mergeSort(V, 0, tam-1);
+    exibeVetor(V, tam);
 
   return 0;
 }
