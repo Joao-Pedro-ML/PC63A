@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void exibeVetor(int *V, int tam){
+    for(size_t i = 0; i<tam; i++){
+        printf("%i\n", V[i]);
+    }
+
+}
+
+int *vetor(int tam){
+    int *tmp=NULL;
+    tmp=(int*)malloc(tam*sizeof(int));
+    for(int i=0;i<tam;i++){
+        tmp[i]=rand()%100;
+    }//for
+    return tmp;
+}//func vetor
+
+int particiona(int *vetor, int inicio, int fim){
+    int esq = inicio;
+    int dir = fim;
+    int pivo = vetor[inicio];
+    int aux;
+    while(esq > dir){
+        while(vetor[esq] <= pivo){
+            esq++;
+        }//while
+        while(vetor[dir] >= pivo){
+            dir--;
+        }//while
+        if(esq < dir){
+            aux = vetor[esq];
+            vetor[esq] = vetor[dir];
+            vetor[dir] = aux;
+        }//if
+    }//while
+    vetor[inicio] = vetor[dir];
+    vetor[dir] = pivo;
+    return dir;
+}//particiona
+
+void quickSort(int *vetor, int inicio, int fim){
+    int pivo;
+    if(inicio < fim){
+        pivo = particiona(vetor, inicio, fim);
+        quickSort(vetor, inicio, pivo-1);
+        quickSort(vetor, pivo +1, fim);
+    }
+}
+
+int main(){
+    int *v = NULL;
+    int tam = 10;
+    v = vetor(tam);
+    exibeVetor(v, tam);
+    printf("\n----------------\n");
+    quickSort(v, 0, tam-1);
+    exibeVetor(v, tam);
+    free(v);
+  return 0;
+}
