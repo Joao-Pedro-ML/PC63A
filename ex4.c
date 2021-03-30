@@ -20,39 +20,6 @@ int comparaNome(const void * a, const void * b){
     }
 }
 
-int comparaIdade(const void * a, const void * b){
-    if((*(t_atleta*)a).idade == (*(t_atleta*)b).idade){
-        return 0; //iguais
-    }else{
-        if((*(t_atleta*)a).idade < (*(t_atleta*)b).idade){
-            return -1; //menor
-        }else{
-            return 1; //maior
-        }
-    }
-}
-
-void escrever(t_atleta atleta[]){
-
-    int i;
-    //int tam_vet = sizeof(atleta) - 1; // tamanho do vetor
-    FILE * arq;
-    // abre o arquivo para escrita no modo append (adiciona ao final)
-    arq = fopen("dados.txt", "ab");
-    if(arq != NULL){
-        for(i = 0; i < 4; i++){
-            // escreve cada elemento do vetor no arquivo
-            fwrite(&atleta[i], sizeof(t_atleta), 1, arq);
-        }
-        fclose(arq); // aborta o programa
-    }
-    else
-    {
-        printf("\nErro ao abrir o arquivo para leitura!\n");
-        exit(1); // aborta o programa
-    }
-}
-
 void limpar_buffer() {
     int ch;
     do {
@@ -62,32 +29,30 @@ void limpar_buffer() {
 
 int main(){
     
-    t_atleta atleta;
-    FILE * arq = fopen("dados.txt", "wb");
+    t_atleta atleta[4];
+    FILE * arq = fopen("arquivo.txt", "a");
     if(arq == NULL){
         printf("Erro ao abrir arquivo");
         exit(1);
     }
     
-    
-    
-    for(int i = 0; i<4; i++){
+    for(int i = 0; i<1; i++){
         printf("Escreva o nome do atleta: ");
-        scanf("%s", &*atleta.nome);
+        scanf("%s", &*atleta[i].nome);
         limpar_buffer();
-        fprintf(arq, "%s", atleta.nome[i]);
+        fprintf(arq, "%s", atleta[i].nome);
         printf("Escreva o esporte do atleta: ");
-        scanf("%c", &*atleta.esporte);
+        scanf("%c", &*atleta[i].esporte);
         limpar_buffer();
-        fprintf(arq, "%s", atleta.esporte[i]);
+        fprintf(arq, "%s", atleta[i].esporte);
         printf("Escreva a idade do atleta: ");
-        scanf("%i", &atleta.idade);
+        scanf("%i", &atleta[i].idade);
         limpar_buffer();
-        fprintf(arq, "%i", atleta.idade[i]);
+        fprintf(arq, "%i", atleta[i].idade);
         printf("Escreva a altura do atleta: ");
-        scanf("%f", &atleta.altura);
+        scanf("%f", &atleta[i].altura);
         limpar_buffer();
-        //fwrite(&atleta.altura[i], sizeof(t_atleta), i, arq);
+        fwrite(&atleta[i].altura, sizeof(t_atleta), i, arq);
     }
     
     
