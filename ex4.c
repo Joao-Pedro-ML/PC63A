@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct atleta{
+typedef struct {
     char nome[30];
     char esporte[30];
     int idade;
     float altura;
-}t_atleta;
+}atleta;
 
 int comparaNome(const void * a, const void * b){
-    if((*(t_atleta*)a).nome == (*(t_atleta*)b).nome){
+    if((*(atleta*)a).nome == (*(atleta*)b).nome){
         return 0; //iguais
     }else{
-        if((*(t_atleta*)a).nome < (*(t_atleta*)b).nome){
+        if((*(atleta*)a).nome < (*(atleta*)b).nome){
             return -1; //menor
         }else{
             return 1; //maior
@@ -20,41 +20,32 @@ int comparaNome(const void * a, const void * b){
     }
 }
 
-void limpar_buffer() {
-    int ch;
-    do {
-        ch = fgetc(stdin);
-    } while (ch != EOF && ch != '\n');
-}
-
 int main(){
     
-    t_atleta atleta[4];
-    FILE * arq = fopen("arquivo.txt", "a");
+    FILE *arq = NULL;
+    arq = fopen("arquivo.txt", "rb");
     if(arq == NULL){
         printf("Erro ao abrir arquivo");
         exit(1);
     }
     
-    for(int i = 0; i<1; i++){
-        printf("Escreva o nome do atleta: ");
-        scanf("%s", &*atleta[i].nome);
-        limpar_buffer();
-        fprintf(arq, "%s", atleta[i].nome);
-        printf("Escreva o esporte do atleta: ");
-        scanf("%c", &*atleta[i].esporte);
-        limpar_buffer();
-        fprintf(arq, "%s", atleta[i].esporte);
-        printf("Escreva a idade do atleta: ");
-        scanf("%i", &atleta[i].idade);
-        limpar_buffer();
-        fprintf(arq, "%i", atleta[i].idade);
-        printf("Escreva a altura do atleta: ");
-        scanf("%f", &atleta[i].altura);
-        limpar_buffer();
-        fwrite(&atleta[i].altura, sizeof(t_atleta), i, arq);
-    }
+    atleta *at = (atleta*)malloc(5*sizeof(atleta));
     
+    if (at == NULL){
+        printf("Houve um erro");
+        exit(1);
+      }
+    
+  fread(at, sizeof(atleta), 5, arq);
+  qsort(at, 5, sizeof(atleta), comparaNome);
+  for(int i = 0; i < 5; i++)
+    printf("%s, %s, %i, %.2f\n", at[i].nome,  at[i].esporte,  at[i].idade,  at[i].altura);
+
+  fclose(arq);
+
+  
+
+
     
   return 0;
 }
